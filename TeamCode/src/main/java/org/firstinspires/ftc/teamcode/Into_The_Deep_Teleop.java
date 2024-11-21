@@ -29,7 +29,9 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
     public DcMotor front_right;
     public DcMotor back_left;
     public DcMotor back_right;
-
+    public DcMotor winch;
+    public DcMotor slideRot;
+    public DcMotor slideSpool;
 
     //other motors
 
@@ -57,11 +59,21 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
         back_left = hardwareMap.get(DcMotor.class, "back_left");
         back_right = hardwareMap.get(DcMotor.class, "back_right");
 
+        //Lift System
+        winch = hardwareMap.get(DcMotor.class, "winch");
+        slideRot = hardwareMap.get(DcMotor.class, "slideRot");
+        slideSpool = hardwareMap.get(DcMotor.class, "slideSpool");
+
 
         front_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         front_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         back_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         back_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        //Lift System
+        winch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideRot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideSpool.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //sets motor direction for mecanum wheels
         front_right.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -136,6 +148,23 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
             if (gamepad1.right_bumper) {
                 right = -right;
             }
+
+            //Lift System
+                if (gamepad2.right_stick_y > 0) {
+                    winch.setPower(0.5);
+                } else if (gamepad2.right_stick_y < 0) {
+                    winch.setPower(-0.5);
+                } else {
+                winch.setPower(0);
+                }
+            if (gamepad2.left_stick_y > 0.01) {
+                slideRot.setPower(0.5);
+            } else if (gamepad2.left_stick_y < 0.01) {
+                slideRot.setPower(-0.5);
+            } else {
+                slideRot.setPower(0);
+            }
+
             /*
             if((forward > 0) &! (gamepad1.left_trigger > 0.1)) {
                 clockwise = Range.clip(clockwise + (-0.035 * forward) + (0.035 * right), -1, 1 );

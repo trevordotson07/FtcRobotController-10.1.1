@@ -12,6 +12,9 @@ public class Into_the_Deep_Hardware
     public DcMotor front_right;
     public DcMotor back_left;
     public DcMotor back_right;
+    public DcMotor winch;
+    public DcMotor slideRot;
+    public DcMotor slideSpool;
 
     /* local OpMode members. */
     //calls hardware map
@@ -36,7 +39,9 @@ public class Into_the_Deep_Hardware
         back_left = hwMap.get(DcMotor.class, "back_left");
         back_right = hwMap.get(DcMotor.class, "back_right");
 
-
-
+        //Lift System
+        winch = hwMap.get(DcMotor.class, "winch");
+        slideRot = hwMap.get(DcMotor.class, "slideRot");
+        slideSpool = hwMap.get(DcMotor.class, "slideSpool");
     }
 }
