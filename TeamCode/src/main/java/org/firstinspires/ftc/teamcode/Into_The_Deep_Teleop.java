@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -29,11 +30,16 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
     public DcMotor front_right;
     public DcMotor back_left;
     public DcMotor back_right;
-    public DcMotor winch;
+    public DcMotor lift;
     public DcMotor slideRot;
     public DcMotor slideSpool;
+    public DcMotor slideRetract;
 
-    //other motors
+    //Define Servos
+    public Servo collectionTilt;
+    public Servo collectionPan;
+    public Servo collectionIntake;
+
 
     //@Override
     public void runOpMode() //throws InterruptedException
@@ -60,9 +66,15 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
         back_right = hardwareMap.get(DcMotor.class, "back_right");
 
         //Lift System
-        winch = hardwareMap.get(DcMotor.class, "winch");
+        lift = hardwareMap.get(DcMotor.class, "lift");
         slideRot = hardwareMap.get(DcMotor.class, "slideRot");
         slideSpool = hardwareMap.get(DcMotor.class, "slideSpool");
+        slideRetract = hardwareMap.get(DcMotor.class, "slideRetract");
+
+        //Collection System
+        collectionTilt = hardwareMap.get(Servo.class, "collectionTilt");
+        collectionPan = hardwareMap.get(Servo.class, "collectionPan");
+        collectionIntake = hardwareMap.get(Servo.class, "collectionIntake");
 
 
         front_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -71,9 +83,10 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
         back_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Lift System
-        winch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slideRot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slideSpool.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideRetract.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //sets motor direction for mecanum wheels
         front_right.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -151,11 +164,11 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
 
             //Lift System
             if (gamepad2.right_stick_y > 0.01) {
-                    winch.setPower(0.5);
+                    lift.setPower(0.5);
             } else if (gamepad2.right_stick_y < -0.01) {
-                    winch.setPower(-0.5);
+                    lift.setPower(-0.5);
             } else {
-                winch.setPower(0);
+                lift.setPower(0);
             }
 
             if (gamepad2.left_stick_y > 0.01) {
