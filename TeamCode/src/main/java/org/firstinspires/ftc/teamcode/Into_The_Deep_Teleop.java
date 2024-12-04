@@ -150,21 +150,29 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
             }
 
             //Lift System
-                if (gamepad2.right_stick_y > 0) {
+            if (gamepad2.right_stick_y > 0.01) {
                     winch.setPower(0.5);
-                } else if (gamepad2.right_stick_y < 0) {
+            } else if (gamepad2.right_stick_y < -0.01) {
                     winch.setPower(-0.5);
-                } else {
+            } else {
                 winch.setPower(0);
-                }
+            }
+
             if (gamepad2.left_stick_y > 0.01) {
                 slideRot.setPower(0.5);
-            } else if (gamepad2.left_stick_y < 0.01) {
+            } else if (gamepad2.left_stick_y < -0.01) {
                 slideRot.setPower(-0.5);
             } else {
                 slideRot.setPower(0);
             }
 
+            if (gamepad2.a) {
+                slideSpool.setPower(0.85);
+            } else if (gamepad2.y) {
+                slideSpool.setPower(-0.85);
+            } else {
+                slideSpool.setPower(0);
+            }
             /*
             if((forward > 0) &! (gamepad1.left_trigger > 0.1)) {
                 clockwise = Range.clip(clockwise + (-0.035 * forward) + (0.035 * right), -1, 1 );
