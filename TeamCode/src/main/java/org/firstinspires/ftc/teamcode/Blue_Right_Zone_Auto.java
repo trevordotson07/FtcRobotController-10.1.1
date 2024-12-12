@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-@Autonomous(name= "Red_Left_Basket_Auto", group="14174")
+@Autonomous(name= "Blue_Right_Zone_Auto", group="14174")
 //@Disabled//comment out this line before using
-public class Red_Left_Basket_Auto extends LinearOpMode {
+public class Blue_Right_Zone_Auto extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     //-1 for debug, but we can keep it like this because if it works, it should change to either 0 or 255
@@ -155,12 +155,12 @@ public class Red_Left_Basket_Auto extends LinearOpMode {
             telemetry.addData("Values", valLeft + "   " + valRight);
 
             //DEGREES ARE FLIPPED "-" TURNS RIGHT AND "+" TURNS LEFT
-        if (opModeIsActive()) {
-            opState++;
-            if (opState == 1 && opModeIsActive()) {
-                driveStraight(1000, 75, 5,0,10);
+            if (opModeIsActive()) {
+                opState++;
+                if (opState == 1 && opModeIsActive()) {
+                    driveStraight(1000, 75, 5,0,10);
+                }
             }
-        }
         }//WHILE OP MODE IS ACTIVE ENDS
     }
     //FUNCTIONS
@@ -603,4 +603,5 @@ public class Red_Left_Basket_Auto extends LinearOpMode {
                 });
     }
 }
+
 

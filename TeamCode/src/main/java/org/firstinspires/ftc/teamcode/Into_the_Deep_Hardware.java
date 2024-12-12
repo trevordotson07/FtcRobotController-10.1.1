@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 //import dependencies here (code auto does this)
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -16,11 +17,10 @@ public class Into_the_Deep_Hardware
     public DcMotor lift;
     public DcMotor slideRot;
     public DcMotor slideSpool;
-    public DcMotor slideRetract;
 
     //Define Servos
     public Servo collectionTilt;
-    public Servo collectionPan;
+    public CRServo collectionPan;
     public Servo collectionIntake;
 
     /* local OpMode members. */
@@ -50,11 +50,10 @@ public class Into_the_Deep_Hardware
         lift = hwMap.get(DcMotor.class, "lift");
         slideRot = hwMap.get(DcMotor.class, "slideRot");
         slideSpool = hwMap.get(DcMotor.class, "slideSpool");
-        slideRetract = hwMap.get(DcMotor.class, "slideRetract");
 
         //Collection System
         collectionTilt = hwMap.get(Servo.class, "collectionTilt");
-        collectionPan = hwMap.get(Servo.class, "collectionPan");
+        collectionPan = hwMap.get(CRServo.class, "collectionPan");
         collectionIntake = hwMap.get(Servo.class, "collectionIntake");
     }
 }
