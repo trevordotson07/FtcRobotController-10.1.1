@@ -93,6 +93,10 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
         back_right.setDirection(DcMotorSimple.Direction.FORWARD);
         //Servo Speed
 
+        slideRot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slideRot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slideRot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
 
         robot.init(hardwareMap);
 
@@ -125,6 +129,28 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
             //-----------------------------------------------------------------------------------------
             //-----------------------------------------------------------------------------------------
 
+            //Fine control for collection system
+
+            if(gamepad1.touchpad_finger_1) {
+                if (gamepad1.touchpad_finger_1_x > 0.3) {
+                    collectionPan.setPower(0.10);
+                } else if (gamepad1.touchpad_finger_1_x < -0.3) {
+                    collectionPan.setPower(-0.10);
+                }
+                if (gamepad1.touchpad_finger_1_y > 0.3) {
+                    collectionTilt.setPosition(collectionTilt.getPosition() + 0.05);
+                } else if (gamepad1.touchpad_finger_1_y < -0.3) {
+                    collectionTilt.setPosition(collectionTilt.getPosition() + 0.05);
+
+                }
+            }
+            // Display finger 2 x & y position if finger detected
+            /*if(gamepad1.touchpad_finger_2_y > 0.3) {
+                finger = true;
+                if (finger == true) {
+
+                }
+            }*/
 
             if (Math.abs(gamepad1.left_stick_y) > 0.01) {
                 if (gamepad1.left_stick_y > 0) {
@@ -156,10 +182,6 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
                 clockwise = 0;
             }
 
-            if (gamepad1.right_bumper) {
-                right = -right;
-            }
-
             //Lift System
             if (gamepad2.right_stick_y > 0.01) {
                 lift.setPower(0.5);
@@ -185,26 +207,33 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
                 slideSpool.setPower(0);
             }
 
-            if (gamepad2.touchpad_finger_1_x > 0.01) {
-                collectionPan.setPower(0.15);
-            } else if (gamepad2.touchpad_finger_1_x < -0.01) {
-                collectionPan.setPower(-0.15);
+            if (gamepad1.dpad_down) {
+                collectionTilt.setPosition(0.6);
+            } else if (gamepad1.dpad_up) {
+                collectionTilt.setPosition(0.835);
+            }
+
+            if (gamepad1.dpad_right) {
+                collectionPan.setPower(0.10);
+            } else if (gamepad1.dpad_left) {
+                collectionPan.setPower(-0.10);
             } else {
                 collectionPan.setPower(0);
+
+            }
+            if (gamepad1.left_bumper) {
+                collectionIntake.setPosition(0.6);
+            } else if (gamepad1.left_trigger > 0.01) {
+                collectionIntake.setPosition(0.7);
             }
 
-            if (gamepad2.touchpad_finger_1_y > 0.01) {
-                collectionTilt.setPosition(collectionTilt.getPosition() + 0.05);
-            } else if (gamepad2.touchpad_finger_1_y < -0.01) {
-                collectionTilt.setPosition(collectionTilt.getPosition() - 0.05);
+            if (gamepad1.right_bumper) {
+                slideRot.setPower(0.75);
+                slideRot.setTargetPosition(820);
+            } else if (gamepad1.right_trigger > 0.01) {
+                slideRot.setPower(0.75);
+                slideRot.setTargetPosition(1250);
             }
-
-            if (gamepad1.dpad_down) {
-                collectionIntake.setPosition(0.5);
-            } else if (gamepad1.dpad_up) {
-                collectionIntake.setPosition(0);
-            }
-
             /*
             if((forward > 0) &! (gamepad1.left_trigger > 0.1)) {
                 clockwise = Range.clip(clockwise + (-0.035 * forward) + (0.035 * right), -1, 1 );
@@ -216,28 +245,22 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
             //set moter power based on button pressed and calculates the robot movement from the joystick values
             if (gamepad1.right_trigger > 0.1 ) {
                 front_left.setPower(0.5 * Range.clip(forward + clockwise + right, -1, 1));
-                front_right.setPower(0.5 * Range.clip(forward - clockwise + right, -1, 1));
+                front_right.setPower(0.5 * Range.clip(forward - clockwise - right, -1, 1));
                 back_left.setPower(0.5 * Range.clip(forward + clockwise - right, -1, 1));
-                back_right.setPower(0.5 * Range.clip(forward - clockwise - right, -1, 1));
+                back_right.setPower(0.5 * Range.clip(forward - clockwise + right, -1, 1));
             }else if (gamepad1.left_trigger > 0.1) {
                 front_left.setPower(Range.clip(forward + clockwise + right, -1, 1));
-                front_right.setPower(Range.clip(forward - clockwise + right, -1, 1));
+                front_right.setPower(Range.clip(forward - clockwise - right, -1, 1));
                 back_left.setPower(Range.clip(forward + clockwise - right, -1, 1));
-                back_right.setPower(Range.clip(forward - clockwise - right, -1, 1));
+                back_right.setPower(Range.clip(forward - clockwise + right, -1, 1));
             }
             else  {
                 front_left.setPower(0.75 * Range.clip(forward + clockwise + right, -1, 1));
-                front_right.setPower(0.75 * Range.clip(forward - clockwise + right, -1, 1));
+                front_right.setPower(0.75 * Range.clip(forward - clockwise - right, -1, 1));
                 back_left.setPower(0.75 * Range.clip(forward + clockwise - right, -1, 1));
-                back_right.setPower(0.75 * Range.clip(forward - clockwise - right, -1, 1));
+                back_right.setPower(0.75 * Range.clip(forward - clockwise + right, -1, 1));
             }
-
-
-
-            //ServoTest
-
-
-            telemetry.addData("GamePad2Pos", gamepad2.left_stick_y);
+            telemetry.addData("SlideRot", slideRot.getCurrentPosition());
             telemetry.addData("Status", "Running");
             telemetry.update();
         }

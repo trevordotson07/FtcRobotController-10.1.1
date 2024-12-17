@@ -57,7 +57,8 @@ public class Red_Right_Zone_Auto extends LinearOpMode {
     private final int cols = 480;
 
 
-    OpenCvWebcam depositcam; //EOCV Depo Cam
+
+    //OpenCvWebcam depositcam; //EOCV Depo Cam
 
     //Declare hardware map
     Into_the_Deep_Hardware robot = new Into_the_Deep_Hardware();
@@ -159,6 +160,8 @@ public class Red_Right_Zone_Auto extends LinearOpMode {
                 opState++;
                 if (opState == 1 && opModeIsActive()) {
                     driveStraight(1000, 75, 5,0,10);
+                    turn(-45,75,5);
+                    driveStraight(1000, -75,5,-45,10);
                 }
             }
         }//WHILE OP MODE IS ACTIVE ENDS
@@ -390,6 +393,7 @@ public class Red_Right_Zone_Auto extends LinearOpMode {
         robot.back_left.setPower(bl);
         robot.back_right.setPower(br);
     };
+
 
     //FUNCTIONS NEEDED BY THE GYRO
     String formatAngle(AngleUnit angleUnit, double angle) {

@@ -57,7 +57,7 @@ public class Red_Left_Basket_Auto extends LinearOpMode {
     private final int cols = 480;
 
 
-    OpenCvWebcam depositcam; //EOCV Depo Cam
+    //OpenCvWebcam depositcam; //EOCV Depo Cam
 
     //Declare hardware map
     Into_the_Deep_Hardware robot = new Into_the_Deep_Hardware();
