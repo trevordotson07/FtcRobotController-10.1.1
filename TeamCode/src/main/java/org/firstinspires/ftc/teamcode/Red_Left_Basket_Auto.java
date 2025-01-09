@@ -156,10 +156,12 @@ public class Red_Left_Basket_Auto extends LinearOpMode {
 
             //DEGREES ARE FLIPPED "-" TURNS RIGHT AND "+" TURNS LEFT
         if (opModeIsActive()) {
-            opState++;
-            if (opState == 1 && opModeIsActive()) {
-                driveStraight(1000, 75, 5,0,10);
-            }
+            //driveStraight(500, 25, 5,0,5);
+            turn(60,25,2);
+//            driveStraight(100, 50, 5,60,5);
+//            robot.slideRot.setPower(0.75);
+//            robot.slideRot.setTargetPosition(820);
+
         }
         }//WHILE OP MODE IS ACTIVE ENDS
     }

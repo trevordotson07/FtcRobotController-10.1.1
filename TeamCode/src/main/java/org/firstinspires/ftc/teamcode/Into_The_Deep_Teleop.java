@@ -24,10 +24,10 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
 
     Into_the_Deep_Hardware robot = new Into_the_Deep_Hardware();
 
-    BNO055IMU imu;
+    //BNO055IMU imu;
 
     private ElapsedTime runtime = new ElapsedTime();
-    public DcMotor front_left;
+   /* public DcMotor front_left;
     public DcMotor front_right;
     public DcMotor back_left;
     public DcMotor back_right;
@@ -39,7 +39,7 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
     public Servo collectionTilt;
     public CRServo collectionPan;
     public Servo collectionIntake;
-
+*/
 
     //@Override
     public void runOpMode() //throws InterruptedException
@@ -59,46 +59,11 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
         imu.initialize(parameters2);
 
 
-        //Drive motors
-        front_left = hardwareMap.get(DcMotor.class, "front_left");
-        front_right = hardwareMap.get(DcMotor.class, "front_right");
-        back_left = hardwareMap.get(DcMotor.class, "back_left");
-        back_right = hardwareMap.get(DcMotor.class, "back_right");
-
-        //Lift System
-        lift = hardwareMap.get(DcMotor.class, "lift");
-        slideRot = hardwareMap.get(DcMotor.class, "slideRot");
-        slideSpool = hardwareMap.get(DcMotor.class, "slideSpool");
-
-        //Collection System
-        collectionTilt = hardwareMap.get(Servo.class, "collectionTilt");
-        collectionPan = hardwareMap.get(CRServo.class, "collectionPan");
-        collectionIntake = hardwareMap.get(Servo.class, "collectionIntake");
-
-
-        front_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        front_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        back_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        back_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        //Lift System
-        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        slideRot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        slideSpool.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        //sets motor direction for mecanum wheels
-        front_right.setDirection(DcMotorSimple.Direction.FORWARD);
-        back_left.setDirection(DcMotorSimple.Direction.REVERSE);
-        front_left.setDirection(DcMotorSimple.Direction.REVERSE);
-        back_right.setDirection(DcMotorSimple.Direction.FORWARD);
-        //Servo Speed
-
-        slideRot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        slideRot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        slideRot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
         robot.init(hardwareMap);
+
+        robot.slideRot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.slideRot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //Variables
 
@@ -129,28 +94,6 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
             //-----------------------------------------------------------------------------------------
             //-----------------------------------------------------------------------------------------
 
-            //Fine control for collection system
-
-            if(gamepad1.touchpad_finger_1) {
-                if (gamepad1.touchpad_finger_1_x > 0.3) {
-                    collectionPan.setPower(0.10);
-                } else if (gamepad1.touchpad_finger_1_x < -0.3) {
-                    collectionPan.setPower(-0.10);
-                }
-                if (gamepad1.touchpad_finger_1_y > 0.3) {
-                    collectionTilt.setPosition(collectionTilt.getPosition() + 0.05);
-                } else if (gamepad1.touchpad_finger_1_y < -0.3) {
-                    collectionTilt.setPosition(collectionTilt.getPosition() + 0.05);
-
-                }
-            }
-            // Display finger 2 x & y position if finger detected
-            /*if(gamepad1.touchpad_finger_2_y > 0.3) {
-                finger = true;
-                if (finger == true) {
-
-                }
-            }*/
 
             if (Math.abs(gamepad1.left_stick_y) > 0.01) {
                 if (gamepad1.left_stick_y > 0) {
@@ -184,55 +127,69 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
 
             //Lift System
             if (gamepad2.right_stick_y > 0.01) {
-                lift.setPower(0.5);
+                robot.lift.setPower(0.5);
             } else if (gamepad2.right_stick_y < -0.01) {
-                lift.setPower(-0.5);
+                robot.lift.setPower(-0.5);
             } else {
-                lift.setPower(0);
+                robot.lift.setPower(0);
             }
 
             if (gamepad2.left_stick_y > 0.01) {
-                slideRot.setPower(0.5);
+                robot.slideRot.setPower(0.5);
             } else if (gamepad2.left_stick_y < -0.01) {
-                slideRot.setPower(-0.5);
+                robot.slideRot.setPower(-0.5);
             } else {
-                slideRot.setPower(0);
+                robot.slideRot.setPower(0);
             }
 
             if (gamepad2.cross) {
-                slideSpool.setPower(0.85);
+                robot.slideSpool.setPower(0.85);
             } else if (gamepad2.triangle) {
-                slideSpool.setPower(-0.85);
+                robot.slideSpool.setPower(-0.85);
             } else {
-                slideSpool.setPower(0);
+                robot.slideSpool.setPower(0);
             }
 
             if (gamepad1.dpad_down) {
-                collectionTilt.setPosition(0.6);
+                robot.collectionTilt.setPosition(0.6);
             } else if (gamepad1.dpad_up) {
-                collectionTilt.setPosition(0.835);
+                robot.collectionTilt.setPosition(0.835);
             }
 
             if (gamepad1.dpad_right) {
-                collectionPan.setPower(0.10);
+                robot.collectionPan.setPower(0.10);
             } else if (gamepad1.dpad_left) {
-                collectionPan.setPower(-0.10);
+                robot.collectionPan.setPower(-0.10);
             } else {
-                collectionPan.setPower(0);
+                robot.collectionPan.setPower(0);
 
             }
             if (gamepad1.left_bumper) {
-                collectionIntake.setPosition(0.6);
+                robot.collectionIntake.setPosition(0.6);
             } else if (gamepad1.left_trigger > 0.01) {
-                collectionIntake.setPosition(0.7);
+                robot.collectionIntake.setPosition(0.7);
             }
 
-            if (gamepad1.right_bumper) {
-                slideRot.setPower(0.75);
-                slideRot.setTargetPosition(820);
-            } else if (gamepad1.right_trigger > 0.01) {
-                slideRot.setPower(0.75);
-                slideRot.setTargetPosition(1250);
+            if (gamepad2.right_bumper) {
+                robot.slideRot.setTargetPosition(750);
+                robot.slideRot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.slideRot.setPower(0.95);
+            } else if (gamepad2.right_trigger > 0.01) {
+                robot.slideRot.setTargetPosition(950);
+                robot.slideRot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.slideRot.setPower(0.95);
+           }
+
+            if (gamepad2.left_bumper) {
+                robot.slideRot.setTargetPosition(robot.slideRot.getCurrentPosition());
+                robot.slideRot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.slideRot.setPower(0.95);
+            } else {
+                robot.slideRot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+
+            if (gamepad2.left_trigger > 0.01) {
+                robot.slideRot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             }
             /*
             if((forward > 0) &! (gamepad1.left_trigger > 0.1)) {
@@ -243,24 +200,23 @@ public class Into_The_Deep_Teleop extends LinearOpMode {
             }
             */
             //set moter power based on button pressed and calculates the robot movement from the joystick values
-            if (gamepad1.right_trigger > 0.1 ) {
-                front_left.setPower(0.5 * Range.clip(forward + clockwise + right, -1, 1));
-                front_right.setPower(0.5 * Range.clip(forward - clockwise - right, -1, 1));
-                back_left.setPower(0.5 * Range.clip(forward + clockwise - right, -1, 1));
-                back_right.setPower(0.5 * Range.clip(forward - clockwise + right, -1, 1));
-            }else if (gamepad1.left_trigger > 0.1) {
-                front_left.setPower(Range.clip(forward + clockwise + right, -1, 1));
-                front_right.setPower(Range.clip(forward - clockwise - right, -1, 1));
-                back_left.setPower(Range.clip(forward + clockwise - right, -1, 1));
-                back_right.setPower(Range.clip(forward - clockwise + right, -1, 1));
+            if (gamepad1.right_bumper) {
+                robot.front_left.setPower(0.5 * Range.clip(forward + clockwise + right, -1, 1));
+                robot.front_right.setPower(0.5 * Range.clip(forward - clockwise - right, -1, 1));
+                robot.back_left.setPower(0.5 * Range.clip(forward + clockwise - right, -1, 1));
+                robot.back_right.setPower(0.5 * Range.clip(forward - clockwise + right, -1, 1));
+            } else if (gamepad1.right_trigger > 0.1) {
+                robot.front_left.setPower(Range.clip(forward + clockwise + right, -1, 1));
+                robot.front_right.setPower(Range.clip(forward - clockwise - right, -1, 1));
+                robot.back_left.setPower(Range.clip(forward + clockwise - right, -1, 1));
+                robot.back_right.setPower(Range.clip(forward - clockwise + right, -1, 1));
+            } else {
+                robot.front_left.setPower(0.75 * Range.clip(forward + clockwise + right, -1, 1));
+                robot.front_right.setPower(0.75 * Range.clip(forward - clockwise - right, -1, 1));
+                robot.back_left.setPower(0.75 * Range.clip(forward + clockwise - right, -1, 1));
+                robot.back_right.setPower(0.75 * Range.clip(forward - clockwise + right, -1, 1));
             }
-            else  {
-                front_left.setPower(0.75 * Range.clip(forward + clockwise + right, -1, 1));
-                front_right.setPower(0.75 * Range.clip(forward - clockwise - right, -1, 1));
-                back_left.setPower(0.75 * Range.clip(forward + clockwise - right, -1, 1));
-                back_right.setPower(0.75 * Range.clip(forward - clockwise + right, -1, 1));
-            }
-            telemetry.addData("SlideRot", slideRot.getCurrentPosition());
+            telemetry.addData("SlideRot", robot.slideRot.getCurrentPosition());
             telemetry.addData("Status", "Running");
             telemetry.update();
         }

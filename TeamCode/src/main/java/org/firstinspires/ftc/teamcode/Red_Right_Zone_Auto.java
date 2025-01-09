@@ -157,12 +157,7 @@ public class Red_Right_Zone_Auto extends LinearOpMode {
 
             //DEGREES ARE FLIPPED "-" TURNS RIGHT AND "+" TURNS LEFT
             if (opModeIsActive()) {
-                opState++;
-                if (opState == 1 && opModeIsActive()) {
-                    driveStraight(1000, 75, 5,0,10);
-                    turn(-45,75,5);
-                    driveStraight(1000, -75,5,-45,10);
-                }
+                driveStraight(250,25,5,0,5);
             }
         }//WHILE OP MODE IS ACTIVE ENDS
     }
