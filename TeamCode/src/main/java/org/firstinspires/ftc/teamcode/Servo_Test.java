@@ -41,7 +41,6 @@ public class Servo_Test extends LinearOpMode {
         Servo2 = hardwareMap.servo.get("collectionTilt");
         Servo3 = hardwareMap.servo.get("collectionIntake");
         //Servo4 = hardwareMap.servo.get("NAME");
-        Motor1 = hardwareMap.dcMotor.get("slideRot");
 
         //Servo1.setPosition(0.7);
         //Wait for the game to start (driver presses PLAY)
@@ -51,12 +50,6 @@ public class Servo_Test extends LinearOpMode {
         Servo1.setDirection(CRServo.Direction.FORWARD);
         Servo3.setDirection(Servo.Direction.FORWARD);
         Servo2.setPosition(0.6);
-        Motor1.setDirection(DcMotor.Direction.FORWARD);
-        Motor1.setTargetPosition(0);
-        Motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Motor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Motor1.setPower(0.75);
 
         idle();
 
@@ -103,22 +96,12 @@ public class Servo_Test extends LinearOpMode {
                 telemetry.addData("Direction", Servo3.getDirection());
                 telemetry.update();
             }
-            if (gamepad1.dpad_left) {
-                Motor1.setTargetPosition(Motor1.getCurrentPosition() + 10);
-                telemetry.addData("Servo4 Position", Motor1.getCurrentPosition());
-                telemetry.addData("Direction", Servo4.getDirection());
-                telemetry.update();
-            }
-            if (gamepad1.dpad_right) {
-                Motor1.setTargetPosition(Motor1.getCurrentPosition() + 10);
-                telemetry.addData("Servo4 Position", Motor1.getCurrentPosition());
-                telemetry.addData("Direction", Servo4.getDirection());
-                telemetry.update();
+
             }
 
 
         }
             }
     }
-}
+
 

@@ -75,6 +75,9 @@ public class Into_the_Deep_Hardware
         front_left.setDirection(DcMotorSimple.Direction.REVERSE);
         back_right.setDirection(DcMotorSimple.Direction.FORWARD);
 
+        //Sets motor direction for other motors
+        slideSpool.setDirection(DcMotorSimple.Direction.REVERSE);
+
 //      slideRot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //      slideRot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //      slideRot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
