@@ -25,9 +25,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Servo_Test extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    CRServo Servo1;
+    Servo Servo1;
     Servo Servo2;
-    Servo Servo3;
+    CRServo Servo3;
     Servo Servo4;
 
     DcMotor Motor1;
@@ -37,9 +37,9 @@ public class Servo_Test extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        Servo1 = hardwareMap.crservo.get("collectionPan");
+        Servo1 = hardwareMap.servo.get("collectionPan");
         Servo2 = hardwareMap.servo.get("collectionTilt");
-        Servo3 = hardwareMap.servo.get("collectionIntake");
+        Servo3 = hardwareMap.crservo.get("collectionIntake");
         //Servo4 = hardwareMap.servo.get("NAME");
 
         //Servo1.setPosition(0.7);
@@ -47,9 +47,8 @@ public class Servo_Test extends LinearOpMode {
         waitForStart();
         runtime.reset();
         Servo2.setDirection(Servo.Direction.FORWARD);
-        Servo1.setDirection(CRServo.Direction.FORWARD);
-        Servo3.setDirection(Servo.Direction.FORWARD);
-        Servo2.setPosition(0.6);
+        Servo1.setDirection(Servo.Direction.FORWARD);
+
 
         idle();
 
@@ -61,14 +60,14 @@ public class Servo_Test extends LinearOpMode {
 
 
             if (gamepad1.a) {
-                Servo1.setPower(.001);
-                telemetry.addData("Servo1 Position", Servo1.getPower());
+                Servo1.setPosition(Servo1.getPosition() + .001);
+                telemetry.addData("Servo1 Position", Servo1.getPosition());
                 telemetry.addData("Direction", Servo1.getDirection());
                 telemetry.update();
             }
             if (gamepad1.b) {
-                Servo1.setPower(-.001);
-                telemetry.addData("Servo1 Position", Servo1.getPower());
+                Servo1.setPosition(Servo1.getPosition() - .001);
+                telemetry.addData("Servo1 Position", Servo1.getPosition());
                 telemetry.addData("Direction", Servo1.getDirection());
                 telemetry.update();
             }
@@ -84,17 +83,6 @@ public class Servo_Test extends LinearOpMode {
                 telemetry.addData("Direction", Servo2.getDirection());
                 telemetry.update();
 
-            if (gamepad1.dpad_up) {
-                Servo3.setPosition(Servo3.getPosition() + .001);
-                telemetry.addData("Servo3 Position", Servo3.getPosition());
-                telemetry.addData("Direction", Servo3.getDirection());
-                telemetry.update();
-            }
-            if (gamepad1.dpad_down) {
-                Servo3.setPosition(Servo3.getPosition() - .001);
-                telemetry.addData("Servo3 Position", Servo3.getPosition());
-                telemetry.addData("Direction", Servo3.getDirection());
-                telemetry.update();
             }
 
             }
@@ -102,6 +90,6 @@ public class Servo_Test extends LinearOpMode {
 
         }
             }
-    }
+
 
 

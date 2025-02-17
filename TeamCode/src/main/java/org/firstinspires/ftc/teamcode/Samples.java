@@ -15,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 public class Samples extends LinearOpMode {
     //defines variables for gyro
     double botHeading = 0;
+
     double offset = 0;
     Into_the_Deep_Hardware robot = new Into_the_Deep_Hardware();
 
@@ -49,7 +50,7 @@ public class Samples extends LinearOpMode {
         // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
         imu.initialize(parameters2);
 
-        int opState = 0;
+
 
         waitForStart();
 
@@ -64,6 +65,11 @@ public class Samples extends LinearOpMode {
 
             if (gamepad1.right_bumper) {
                 offset = -botHeading;
+            }
+
+            if (gamepad2.left_bumper) {
+                robot.slideRot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                robot.slideSpool.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
 
             // Rotate the movement direction counter to the bot's rotation
@@ -81,71 +87,16 @@ public class Samples extends LinearOpMode {
 
             //Change motor speed based on button presses on controller 1
             if (gamepad1.right_bumper) {
-                robot.front_left.setPower(0.5 * frontLeftPower);
-                robot.front_right.setPower(0.5 * frontRightPower);
-                robot.back_left.setPower(0.5 * backLeftPower);
-                robot.back_right.setPower(0.5 * backRightPower);
-            } else if (gamepad1.right_trigger > 0.1) {
-                robot.front_left.setPower(frontLeftPower);
-                robot.front_right.setPower(frontRightPower);
-                robot.back_left.setPower(backLeftPower);
-                robot.back_right.setPower(backRightPower);
-            } else {
                 robot.front_left.setPower(0.75 * frontLeftPower);
                 robot.front_right.setPower(0.75 * frontRightPower);
                 robot.back_left.setPower(0.75 * backLeftPower);
                 robot.back_right.setPower(0.75 * backRightPower);
-            }
-            if (gamepad2.circle) {
-                opState++;
-            } else if (gamepad2.square) {
-                opState--;
-            }
-            if (opState == 1) {
-                robot.slideRot.setTargetPosition(0);
-                robot.slideRot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.slideRot.setPower(0.95);
-            } else if (opState == 2) {
-                robot.slideSpool.setTargetPosition(1350);
-                robot.slideSpool.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.slideSpool.setPower(0.95);
-            } else if (opState == 3) {
-                robot.collectionTilt.setPosition(0.5);
-            } else if (opState == 4) {
-                robot.collectionIntake.setPosition(0.5);
-            } else if (opState == 5) {
-                robot.collectionTilt.setPosition(0.8);
-            } else if (opState == 6) {
-                robot.slideSpool.setTargetPosition(0);
-                robot.slideSpool.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.slideSpool.setPower(0.95);
-            } else if (opState == 7) {
-                robot.slideRot.setTargetPosition(1350);
-                robot.slideRot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.slideRot.setPower(0.95);
-            } else if (opState == 8) {
-                robot.slideSpool.setTargetPosition(1350);
-                robot.slideSpool.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.slideSpool.setPower(0.95);
-            } else if (opState == 9) {
-                robot.collectionIntake.setPosition(0.8);
-            } else if (opState == 10) {
-                robot.slideSpool.setTargetPosition(0);
-                robot.slideSpool.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.slideSpool.setPower(0.95);
-            } else if (opState == 11) {
-                opState = 0;
-            }
-
-
-            /*//Lift System
-            if (gamepad2.right_stick_y > 0.01) {
-                robot.lift.setPower(0.5);
-            } else if (gamepad2.right_stick_y < -0.01) {
-                robot.lift.setPower(-0.5);
             } else {
-                robot.lift.setPower(0);
-            }*/
+                robot.front_left.setPower(0.95 * frontLeftPower);
+                robot.front_right.setPower(0.95 * frontRightPower);
+                robot.back_left.setPower(0.95 * backLeftPower);
+                robot.back_right.setPower(0.95 * backRightPower);
+            }
             //Slide rotation
             if (gamepad2.left_stick_y > 0.01) {
                 robot.slideRot.setPower(-0.5);
@@ -154,67 +105,63 @@ public class Samples extends LinearOpMode {
             } else {
                 robot.slideRot.setPower(0);
             }
-
             //Collection tilt
-            if (gamepad1.dpad_down) {
-                robot.collectionTilt.setPosition(0.51);
-            } else if (gamepad1.dpad_up) {
+            if (gamepad1.cross) {
                 robot.collectionTilt.setPosition(0.83);
-            }
-            //Collection Pan
-            if (gamepad1.dpad_right) {
-                robot.collectionPan.setPower(0.40);
-            } else if (gamepad1.dpad_left) {
-                robot.collectionPan.setPower(-0.40);
-            } else {
-                robot.collectionPan.setPower(0);
+            } else if (gamepad1.triangle) {
+                robot.collectionTilt.setPosition(0.23);
             }
             //Collection Intake
-            if (gamepad1.left_bumper) {
-                robot.collectionIntake.setPosition(0.6);
-            } else if (gamepad1.left_trigger > 0.01) {
-                robot.collectionIntake.setPosition(0.7);
-            }
-            // Sets the slides to a vertical position
-            if (gamepad2.right_bumper) {
-                robot.slideRot.setTargetPosition(1350);
-                robot.slideRot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.slideRot.setPower(0.95);
-            }
-            // Holds the slides to the current position
-            if (gamepad2.left_bumper) {
-                robot.slideRot.setTargetPosition(robot.slideRot.getCurrentPosition());
-                robot.slideRot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.slideRot.setPower(0.95);
-            } else {
-                robot.slideRot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            if (gamepad1.dpad_down) {
+                robot.collectionIntake.setPower(0.53);
+            } //else if (gamepad1.dpad_left) {
+            //robot.collectionIntake.setPosition(0.72);}
+            else if (gamepad1.dpad_up) {
+                robot.collectionIntake.setPower(0.8);
             }
             //Resets slides encoder
-            if (gamepad2.left_trigger > 0.01) {
+            if (gamepad1.left_trigger > 0.01) {
                 robot.slideRot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.slideSpool.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            }
+            if (gamepad2.right_bumper) {
+                robot.slideRot.setTargetPosition(robot.slideRot.getCurrentPosition());
+                robot.slideSpool.setTargetPosition(robot.slideSpool.getCurrentPosition());
+                Lift(0.95);
+            }
+            if (!gamepad2.left_bumper) {
+                SlidesControl(1350,0,-0.95, 0.95);
+            }
+            if (gamepad2.left_bumper) {
+                SlidesControl(0,1350,0.95,-0.95);
+                robot.collectionTilt.setPosition(0.8);
+            }
+            if (gamepad2.left_bumper && gamepad2.left_trigger > 0.01) {
+                robot.collectionTilt.setPosition(0.5);
+                robot.collectionIntake.setPower(0.5);
             }
             //Software Limit for the slides
-            if (gamepad2.right_trigger < 0.01) {
+            if (gamepad1.right_trigger < 0.01) {
                 if (robot.slideSpool.getCurrentPosition() > 1350) {
                     if (gamepad2.cross) {
-                        robot.slideSpool.setPower(-0.85);
+                        robot.slideSpool.setPower(0.85);
                     } else {
                         robot.slideSpool.setPower(0);
                     }
                 } else {
                     if (gamepad2.cross) {
-                        robot.slideSpool.setPower(-0.85);
-                    } else if (gamepad2.triangle) {
                         robot.slideSpool.setPower(0.85);
+                    } else if (gamepad2.triangle) {
+                        robot.slideSpool.setPower(-0.85);
                     } else {
                         robot.slideSpool.setPower(0);
                     }
                 }
             } else {
                 if (gamepad2.cross) {
-                    robot.slideSpool.setPower(-0.85);
-                } else if (gamepad2.triangle) {
                     robot.slideSpool.setPower(0.85);
+                } else if (gamepad2.triangle) {
+                    robot.slideSpool.setPower(-0.85);
                 } else {
                     robot.slideSpool.setPower(0);
                 }
@@ -223,8 +170,25 @@ public class Samples extends LinearOpMode {
 
             telemetry.addData("Status", "Running");
             telemetry.addData("heading", (Math.toDegrees(botHeading)));
+            telemetry.addData("SlideRot", robot.slideRot.getCurrentPosition());
+            telemetry.addData("Spool", robot.slideSpool.getCurrentPosition());
             telemetry.update();
         }
+
+    }
+    public void SlidesControl (int RotTarget, int SpoolTarget, double RotPower, double SpoolPower){
+        robot.slideRot.setTargetPosition(RotTarget);
+        robot.slideSpool.setTargetPosition(SpoolTarget);
+        robot.slideRot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.slideSpool.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.slideRot.setPower(RotPower);
+        robot.slideSpool.setPower(SpoolPower);
+    }
+    public void Lift (double liftPower) {
+        robot.slideRot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.slideSpool.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.slideRot.setPower(liftPower);
+        robot.slideSpool.setPower(liftPower);
     }
 }
 

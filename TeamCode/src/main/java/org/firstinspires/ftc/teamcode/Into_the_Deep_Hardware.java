@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 //import dependencies here (code auto does this)
+
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -15,14 +16,13 @@ public class Into_the_Deep_Hardware
     public DcMotor front_right;
     public DcMotor back_left;
     public DcMotor back_right;
-    public DcMotor lift;
     public DcMotor slideRot;
     public DcMotor slideSpool;
 
     //Define Servos
     public Servo collectionTilt;
-    public CRServo collectionPan;
-    public Servo collectionIntake;
+    //public Servo collectionPan;
+    public CRServo collectionIntake;
 
     /* local OpMode members. */
     //calls hardware map
@@ -49,14 +49,13 @@ public class Into_the_Deep_Hardware
         back_right = hwMap.get(DcMotor.class, "back_right");
 
         //Lift System
-        lift = hwMap.get(DcMotor.class, "lift");
         slideRot = hwMap.get(DcMotor.class, "slideRot");
         slideSpool = hwMap.get(DcMotor.class, "slideSpool");
 
         //Collection System
         collectionTilt = hwMap.get(Servo.class, "collectionTilt");
-        collectionPan = hwMap.get(CRServo.class, "collectionPan");
-        collectionIntake = hwMap.get(Servo.class, "collectionIntake");
+        //collectionPan = hwMap.get(Servo.class, "collectionPan");
+        collectionIntake = hwMap.get(CRServo.class, "collectionIntake");
 
 
         front_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -65,7 +64,7 @@ public class Into_the_Deep_Hardware
         back_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Lift System
-        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         slideRot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slideSpool.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -77,6 +76,7 @@ public class Into_the_Deep_Hardware
 
         //Sets motor direction for other motors
         slideSpool.setDirection(DcMotorSimple.Direction.REVERSE);
+        slideRot.setDirection(DcMotorSimple.Direction.FORWARD);
 
 //      slideRot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //      slideRot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

@@ -5,12 +5,10 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Func;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -22,18 +20,15 @@ import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
-import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-@Autonomous(name= "Red_Right_Zone_Auto", group="14174")
+@Autonomous(name= "SpecimanA", group="14174")
 //@Disabled//comment out this line before using
-public class Red_Right_Zone_Auto extends LinearOpMode {
+public class SpecimanA extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     //-1 for debug, but we can keep it like this because if it works, it should change to either 0 or 255
@@ -55,7 +50,6 @@ public class Red_Right_Zone_Auto extends LinearOpMode {
 
     private final int rows = 640;
     private final int cols = 480;
-
 
 
     //OpenCvWebcam depositcam; //EOCV Depo Cam
@@ -93,13 +87,13 @@ public class Red_Right_Zone_Auto extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        //Set motor directions
-        robot.front_left.setDirection(DcMotorSimple.Direction.REVERSE);
-        robot.front_right.setDirection(DcMotorSimple.Direction.FORWARD);
-        robot.back_left.setDirection(DcMotorSimple.Direction.REVERSE);
-        robot.back_right.setDirection(DcMotorSimple.Direction.FORWARD);
-        robot.slideRot.setDirection(DcMotorSimple.Direction.FORWARD);
-        robot.slideSpool.setDirection(DcMotorSimple.Direction.FORWARD);
+//        //Set motor directions
+//        robot.front_left.setDirection(DcMotorSimple.Direction.REVERSE);
+//        robot.front_right.setDirection(DcMotorSimple.Direction.FORWARD);
+//        robot.back_left.setDirection(DcMotorSimple.Direction.REVERSE);
+//        robot.back_right.setDirection(DcMotorSimple.Direction.FORWARD);
+//        robot.slideRot.setDirection(DcMotorSimple.Direction.FORWARD);
+//        robot.slideSpool.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //CODE FOR SETTING UP AND INITIALIZING IMU
         BNO055IMU.Parameters parameters2 = new BNO055IMU.Parameters();
@@ -121,11 +115,11 @@ public class Red_Right_Zone_Auto extends LinearOpMode {
 
         //slides motor stuff
 
-        //set zero power behavior
-        robot.back_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.back_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.front_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.front_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        //set zero power behavior
+//        robot.back_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        robot.back_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        robot.front_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        robot.front_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
         //DEFINE SENSORS
@@ -154,11 +148,77 @@ public class Red_Right_Zone_Auto extends LinearOpMode {
         runtime.reset();
         while (opModeIsActive()) {
             telemetry.addData("Values", valLeft + "   " + valRight);
-
+            telemetry.addData("opState", opState );
+            telemetry.addData("rot", robot.slideRot.getCurrentPosition());
+            telemetry.addData("spool", robot.slideSpool.getCurrentPosition());
             //DEGREES ARE FLIPPED "-" TURNS RIGHT AND "+" TURNS LEFT
-            if (opModeIsActive()) {
-                driveStraight(250,25,5,0,5);
+            if (opState == 0) {
+                driveStraight(-450, 15, 5, 0, 10);
+                sleep(500);
+                //
+                robot.collectionTilt.setPosition(0.5);
+                //
+                robot.slideRot.setTargetPosition(1375);
+                robot.slideRot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.slideRot.setPower(0.95);
+                sleep(1000);
+                //
+                robot.slideSpool.setTargetPosition(2200);
+                robot.slideSpool.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.slideSpool.setPower(-0.95);
+                telemetry.update();
+                sleep(2000);
+                driveStraight(-80, 15, 5, 0, 10);
+                sleep(2000);
+                robot.slideSpool.setTargetPosition(2000);
+                robot.slideSpool.setPower(0.95);
+                robot.slideSpool.setTargetPosition(0);
+                sleep(1500);
+                robot.slideSpool.setPower(0);
+                robot.slideRot.setTargetPosition(0);
+                robot.slideRot.setPower(-0.95);
+                sleep(1000);
+                robot.slideRot.setPower(0);
+                driveStrafe(-1350,5,10,0);
+                sleep(1500);
+                driveStraight(-1000,15,5,0,10);
+                sleep(1000);
+                driveStrafe(-300,5,10,0);
+                sleep(1000);
+                driveStraight(1400,15,10,0,10);
+                sleep(1000);
+                driveStraight(-1400,15,10,0,10);
+                sleep(1000);
+                driveStrafe(-300,5,10,0);
+                sleep(1000);
+                driveStraight(1400,15,10,0,10);
+                sleep(1000);
+                driveStraight(-1400,15,10,0,10);
+                sleep(1000);
+                driveStrafe(-300,5,10,0);
+                sleep(1000);
+                driveStraight(1650,15,10,0,10);
+
+
+                /*turn(170,15,2);
+                sleep(1000);
+                driveStrafe(2500,5,10,-180);
+                sleep(500);
+                driveStraight(75, 15, 5, -180, 10);*/
+
+                //
+                opState++;
             }
+
+            /*sleep(500);
+            robot.slideSpool.setTargetPosition(1350);
+            robot.slideSpool.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.slideSpool.setPower(0.95);
+            sleep(500);
+            driveStraight(-150,50,5,0,5);
+            sleep(500);*/
+
+
         }//WHILE OP MODE IS ACTIVE ENDS
     }
     //FUNCTIONS
@@ -388,7 +448,6 @@ public class Red_Right_Zone_Auto extends LinearOpMode {
         robot.back_left.setPower(bl);
         robot.back_right.setPower(br);
     };
-
 
     //FUNCTIONS NEEDED BY THE GYRO
     String formatAngle(AngleUnit angleUnit, double angle) {

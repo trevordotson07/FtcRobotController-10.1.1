@@ -10,7 +10,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Func;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -22,18 +21,15 @@ import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
-import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-@Autonomous(name= "Red_Left_Basket_Auto", group="14174")
+@Autonomous(name= "SampleA", group="14174")
 //@Disabled//comment out this line before using
-public class Red_Left_Basket_Auto extends LinearOpMode {
+public class SampleA extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     //-1 for debug, but we can keep it like this because if it works, it should change to either 0 or 255
@@ -155,14 +151,12 @@ public class Red_Left_Basket_Auto extends LinearOpMode {
             telemetry.addData("Values", valLeft + "   " + valRight);
 
             //DEGREES ARE FLIPPED "-" TURNS RIGHT AND "+" TURNS LEFT
-        if (opModeIsActive()) {
-            //driveStraight(500, 25, 5,0,5);
-            turn(60,25,2);
-//            driveStraight(100, 50, 5,60,5);
-//            robot.slideRot.setPower(0.75);
-//            robot.slideRot.setTargetPosition(820);
-
-        }
+            if (opModeIsActive()) {
+                opState++;
+                if (opState == 1 && opModeIsActive()) {
+                    driveStrafe(1000, 75, 5,0);
+                }
+            }
         }//WHILE OP MODE IS ACTIVE ENDS
     }
     //FUNCTIONS
@@ -605,4 +599,5 @@ public class Red_Left_Basket_Auto extends LinearOpMode {
                 });
     }
 }
+
 
